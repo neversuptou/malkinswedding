@@ -1,0 +1,10 @@
+services:
+  wedding:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./photos:/app/photos
+      - ./guests.csv:/app/guests.csv
+      - ./.admin_chat_id:/app/.admin_chat_id
+    restart: unless-stopped

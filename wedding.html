@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Виктория & Данила — Свадьба</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:      #f9f5f0;
+      --cream-dark: #f0e9e0;
+      --gold:       #d4a96a;
+      --gold-light: #e8cfa0;
+      --gold-pale:  #f3e6d1;
+      --brown:      #5a4a3a;
+      --brown-dark: #3d3028;
+      --white:      #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background: var(--cream);
+      color: var(--brown);
+      overflow-x: hidden;
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in.delay-1 { transition-delay: 0.15s; }
+    .fade-in.delay-2 { transition-delay: 0.30s; }
+
+    /* ── SECTION HEADINGS ── */
+    .sec-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      color: var(--gold);
+      text-align: center;
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+    .sec-sub {
+      font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--brown);
+      text-align: center;
+      opacity: 0.6;
+      margin-bottom: 3rem;
+    }
+
+    /* ══════════════════════════════
+       HERO
+    ══════════════════════════════ */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 640px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://placehold.co/1920x1080/3d3028/d4a96a?text=') center/cover no-repeat;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(42, 28, 16, 0.72) 0%,
+        rgba(58, 40, 22, 0.60) 55%,
+        rgba(80, 58, 38, 0.80) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 2rem 1.5rem;
+      max-width: 820px;
+      width: 100%;
+    }
+
+    .hero-pre {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      color: var(--gold-light);
+      display: block;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3.2rem, 11vw, 7.5rem);
+      color: var(--white);
+      line-height: 1.05;
+      text-shadow: 0 3px 24px rgba(0,0,0,0.35);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-amp { color: var(--gold); }
+
+    .hero-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-bottom: 2.8rem;
+    }
+
+    .hero-date {
+      font-size: clamp(0.78rem, 1.8vw, 1rem);
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+
+    .hero-venue {
+      font-style: italic;
+      font-size: clamp(1rem, 2.4vw, 1.4rem);
+      color: rgba(232, 207, 160, 0.88);
+    }
+
+    /* COUNTDOWN */
+    .countdown {
+      display: flex;
+      gap: clamp(0.6rem, 2vw, 1.2rem);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cd-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .cd-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(1.9rem, 5vw, 3.2rem);
+      color: var(--white);
+      min-width: clamp(70px, 12vw, 96px);
+      text-align: center;
+      padding: 0.45rem 0.75rem;
+      border: 1px solid rgba(212, 169, 106, 0.45);
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(6px);
+      line-height: 1;
+    }
+
+    .cd-lbl {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* Wave bottom */
+    .hero-wave {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      line-height: 0;
+    }
+
+    /* ══════════════════════════════
+       FLORAL DIVIDER
+    ══════════════════════════════ */
+    .floral-div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      padding: 2.5rem 1.5rem;
+    }
+    .floral-div .ln {
+      flex: 1;
+      max-width: 220px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold) 80%);
+    }
+    .floral-div .ln.r {
+      background: linear-gradient(to left, transparent, var(--gold) 80%);
+    }
+
+    /* ══════════════════════════════
+       DETAILS
+    ══════════════════════════════ */
+    #details {
+      padding: 5rem 1.5rem 6rem;
+      background: var(--cream);
+    }
+
+    .details-wrap { max-width: 860px; margin: 0 auto; }
+
+    .deco-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(212, 169, 106, 0.32);
+      padding: 3rem 2.5rem;
+    }
+
+    /* corner ornaments */
+    .deco-card::before,
+    .deco-card::after,
+    .deco-card .corner-br,
+    .deco-card .corner-tl {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-color: rgba(212,169,106,0.7);
+      border-style: solid;
+    }
+    .deco-card::before  { top: 10px; left: 10px;   border-width: 1px 0 0 1px; }
+    .deco-card::after   { top: 10px; right: 10px;  border-width: 1px 1px 0 0; }
+    .deco-card .corner-bl { content: ''; position: absolute; width: 22px; height: 22px; border-color: rgba(212,169,106,0.7); border-style: solid; bottom: 10px; left: 10px;  border-width: 0 0 1px 1px; }
+    .deco-card .corner-br { content: ''; position: absolute; width: 22px; height: 22px; border-color: rgba(212,169,106,0.7); border-style: solid; bottom: 10px; right: 10px; border-width: 0 1px 1px 0; }
+
+    .timeline { display: flex; flex-direction: column; gap: 1.8rem; margin-bottom: 2.5rem; }
+
+    .tl-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+
+    .tl-icon {
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--gold);
+    }
+
+    .tl-body { flex: 1; }
+
+    .tl-time {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 0.15rem;
+    }
+
+    .tl-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--brown);
+      margin-bottom: 0.2rem;
+    }
+
+    .tl-desc {
+      font-style: italic;
+      font-size: 0.95rem;
+      opacity: 0.72;
+    }
+
+    .tl-sep {
+      width: 1px;
+      background: rgba(212, 169, 106, 0.25);
+      margin-left: calc(46px / 2 - 0.5px);
+      height: 1.4rem;
+      margin-top: -0.8rem;
+      margin-bottom: -0.8rem;
+    }
+
+    .dresscode-block {
+      margin-top: 2.2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(212, 169, 106, 0.28);
+      text-align: center;
+    }
+
+    .dresscode-block h3 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .dresscode-block p { font-style: italic; opacity: 0.78; margin-bottom: 1rem; }
+
+    .swatches {
+      display: flex;
+      justify-content: center;
+      gap: 0.65rem;
+    }
+
+    .swatch {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.9);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    }
+
+    /* ══════════════════════════════
+       RSVP
+    ══════════════════════════════ */
+    #rsvp {
+      padding: 5rem 1.5rem 6rem;
+      background: linear-gradient(135deg, #f3ede6, var(--cream) 55%, #ede6dc);
+    }
+
+    .rsvp-wrap { max-width: 580px; margin: 0 auto; }
+
+    .rsvp-card {
+      background: var(--white);
+      border: 1px solid rgba(212, 169, 106, 0.28);
+      box-shadow: 0 12px 50px rgba(90, 74, 58, 0.07);
+      padding: 3rem 2.5rem;
+    }
+
+    .f-group { margin-bottom: 1.5rem; }
+
+    .f-label {
+      display: block;
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--brown);
+      opacity: 0.75;
+      margin-bottom: 0.5rem;
+    }
+
+    .f-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(212, 169, 106, 0.38);
+      background: var(--cream);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--brown);
+      outline: none;
+      transition: border-color 0.25s;
+    }
+    .f-input:focus { border-color: var(--gold); }
+    .f-input::placeholder { opacity: 0.45; font-style: italic; }
+
+    .attend-opts { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+
+    .att-opt { flex: 1; min-width: 130px; }
+    .att-opt input[type="radio"] { display: none; }
+    .att-opt label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.8rem 1rem;
+      border: 1px solid rgba(212, 169, 106, 0.38);
+      background: var(--cream);
+      cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--brown);
+      transition: all 0.25s;
+      user-select: none;
+    }
+    .att-opt label:hover { border-color: var(--gold); }
+    .att-opt input:checked + label {
+      background: var(--gold);
+      color: var(--white);
+      border-color: var(--gold);
+    }
+
+    .chk-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+    .chk-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--gold);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .chk-row span { font-size: 1rem; }
+
+    .f-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(212, 169, 106, 0.38);
+      background: var(--cream);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--brown);
+      outline: none;
+      resize: vertical;
+      min-height: 100px;
+      transition: border-color 0.25s;
+    }
+    .f-textarea:focus { border-color: var(--gold); }
+    .f-textarea::placeholder { opacity: 0.45; font-style: italic; }
+
+    .btn-send {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      background: var(--gold);
+      color: var(--white);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      margin-top: 0.25rem;
+    }
+    .btn-send:hover {
+      background: var(--brown);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(90,74,58,0.18);
+    }
+
+    .rsvp-thanks {
+      display: none;
+      text-align: center;
+      padding: 3.5rem 1rem;
+    }
+    .rsvp-thanks.show { display: block; }
+    .rsvp-thanks .t-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .rsvp-thanks h3 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.8rem;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .rsvp-thanks p { font-style: italic; opacity: 0.78; }
+
+    /* ══════════════════════════════
+       GALLERY
+    ══════════════════════════════ */
+    #gallery {
+      padding: 5rem 1.5rem 6rem;
+      background: var(--cream);
+    }
+
+    .gallery-wrap { max-width: 1080px; margin: 0 auto; }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .g-item {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: var(--cream-dark);
+    }
+
+    .g-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.55s ease;
+    }
+    .g-item:hover img { transform: scale(1.06); }
+
+    .g-item.ph {
+      border: 1px dashed rgba(212, 169, 106, 0.45);
+      background: rgba(212, 169, 106, 0.04);
+    }
+
+    .ph-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      color: var(--gold);
+      opacity: 0.55;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-align: center;
+      padding: 1rem;
+      pointer-events: none;
+    }
+
+    @keyframes photoIn {
+      from { opacity: 0; transform: scale(0.82); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .g-item.new { animation: photoIn 0.6s cubic-bezier(.22,.68,0,1.3) forwards; }
+
+    .btn-upload {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      margin: 0 auto;
+      padding: 0.85rem 2.4rem;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--brown);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      letter-spacing: 0.18em;
+      cursor: pointer;
+      transition: all 0.28s;
+    }
+    .btn-upload:hover {
+      background: var(--gold);
+      color: var(--white);
+    }
+    #photo-file { display: none; }
+
+    /* ══════════════════════════════
+       FOOTER
+    ══════════════════════════════ */
+    footer {
+      background: var(--brown-dark);
+      color: rgba(249, 245, 240, 0.65);
+      text-align: center;
+      padding: 3rem 1.5rem;
+    }
+    .ft-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.2rem;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .ft-date {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-bottom: 1.1rem;
+    }
+    .ft-heart { color: var(--gold); font-size: 1.3rem; }
+
+    /* ══════════════════════════════
+       RESPONSIVE TWEAKS
+    ══════════════════════════════ */
+    @media (max-width: 720px) {
+      .deco-card { padding: 2rem 1.25rem; }
+      .rsvp-card { padding: 2rem 1.25rem; }
+    }
+    @media (max-width: 480px) {
+      .tl-item { flex-direction: column; gap: 0.6rem; }
+      .tl-sep  { display: none; }
+      .tl-icon { width: 38px; height: 38px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <span class="hero-pre">Мы женимся!</span>
+    <h1 class="hero-title">Виктория <span class="hero-amp">&amp;</span> Данила</h1>
+
+    <div class="hero-meta">
+      <span class="hero-date">14 июня 2026 года &nbsp;·&nbsp; 15:00</span>
+      <span class="hero-venue">Усадьба «Романовых» — ул. Садовая, 12, Москва</span>
+    </div>
+
+    <div class="countdown" id="countdown">
+      <div class="cd-item"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">дней</span></div>
+      <div class="cd-item"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">часов</span></div>
+      <div class="cd-item"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">минут</span></div>
+      <div class="cd-item"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">секунд</span></div>
+    </div>
+  </div>
+
+  <!-- Wavy separator with floral motif -->
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 110" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:100%;">
+      <path d="M0,60 C240,110 480,10 720,60 C960,110 1200,20 1440,65 L1440,110 L0,110 Z" fill="#f9f5f0"/>
+      <!-- Floral motif center -->
+      <g transform="translate(720,52)" fill="none">
+        <circle cx="0" cy="0" r="7" fill="#d4a96a" opacity="0.35"/>
+        <!-- petals -->
+        <path d="M0,-14 Q5,-7 0,0 Q-5,-7 0,-14Z" fill="#d4a96a" opacity="0.55"/>
+        <path d="M0,-14 Q5,-7 0,0 Q-5,-7 0,-14Z" fill="#d4a96a" opacity="0.55" transform="rotate(60,0,-7)"/>
+        <path d="M0,-14 Q5,-7 0,0 Q-5,-7 0,-14Z" fill="#d4a96a" opacity="0.55" transform="rotate(120,0,-7)"/>
+        <path d="M0,-14 Q5,-7 0,0 Q-5,-7 0,-14Z" fill="#d4a96a" opacity="0.55" transform="rotate(180,0,-7)"/>
+        <path d="M0,-14 Q5,-7 0,0 Q-5,-7 0,-14Z" fill="#d4a96a" opacity="0.55" transform="rotate(240,0,-7)"/>
+        <path d="M0,-14 Q5,-7 0,0 Q-5,-7 0,-14Z" fill="#d4a96a" opacity="0.55" transform="rotate(300,0,-7)"/>
+        <!-- stems -->
+        <path d="M-40,10 Q-22,-8 0,0"  stroke="#d4a96a" stroke-width="1" opacity="0.6"/>
+        <path d="M40,10 Q22,-8 0,0"    stroke="#d4a96a" stroke-width="1" opacity="0.6"/>
+        <path d="M-75,18 Q-50,-5 -22,-3" stroke="#d4a96a" stroke-width="0.8" opacity="0.45"/>
+        <path d="M75,18 Q50,-5 22,-3"    stroke="#d4a96a" stroke-width="0.8" opacity="0.45"/>
+        <!-- leaf-buds -->
+        <path d="M-30,14 Q-22,4 -18,8 Q-26,10 -30,14Z" fill="#d4a96a" opacity="0.35"/>
+        <path d="M30,14 Q22,4 18,8 Q26,10 30,14Z"       fill="#d4a96a" opacity="0.35"/>
+        <!-- berries -->
+        <circle cx="-58" cy="12" r="3" fill="#d4a96a" opacity="0.4"/>
+        <circle cx="58"  cy="12" r="3" fill="#d4a96a" opacity="0.4"/>
+        <circle cx="-90" cy="22" r="2" fill="#d4a96a" opacity="0.3"/>
+        <circle cx="90"  cy="22" r="2" fill="#d4a96a" opacity="0.3"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- FLORAL DIVIDER 1 -->
+<div class="floral-div fade-in">
+  <div class="ln"></div>
+  <svg width="130" height="52" viewBox="0 0 130 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- branches -->
+    <path d="M8,28 Q28,12 52,26"   stroke="#d4a96a" stroke-width="1"   fill="none"/>
+    <path d="M122,28 Q102,12 78,26" stroke="#d4a96a" stroke-width="1"   fill="none"/>
+    <path d="M20,14 Q26,4 33,14"   stroke="#d4a96a" stroke-width="0.8" fill="none"/>
+    <path d="M110,14 Q104,4 97,14" stroke="#d4a96a" stroke-width="0.8" fill="none"/>
+    <path d="M38,8 Q43,1 49,8"     stroke="#d4a96a" stroke-width="0.7" fill="none"/>
+    <path d="M92,8 Q87,1 81,8"     stroke="#d4a96a" stroke-width="0.7" fill="none"/>
+    <!-- center rose -->
+    <circle cx="65" cy="26" r="9"  fill="none" stroke="#d4a96a" stroke-width="0.9"/>
+    <circle cx="65" cy="26" r="4"  fill="#d4a96a" opacity="0.28"/>
+    <path d="M65,17 Q69,21 65,26 Q61,21 65,17Z" fill="#d4a96a" opacity="0.55"/>
+    <path d="M65,17 Q69,21 65,26 Q61,21 65,17Z" fill="#d4a96a" opacity="0.55" transform="rotate(72,65,21.5)"/>
+    <path d="M65,17 Q69,21 65,26 Q61,21 65,17Z" fill="#d4a96a" opacity="0.55" transform="rotate(144,65,21.5)"/>
+    <path d="M65,17 Q69,21 65,26 Q61,21 65,17Z" fill="#d4a96a" opacity="0.55" transform="rotate(216,65,21.5)"/>
+    <path d="M65,17 Q69,21 65,26 Q61,21 65,17Z" fill="#d4a96a" opacity="0.55" transform="rotate(288,65,21.5)"/>
+    <!-- berries -->
+    <circle cx="12"  cy="34" r="2"   fill="#d4a96a" opacity="0.4"/>
+    <circle cx="118" cy="34" r="2"   fill="#d4a96a" opacity="0.4"/>
+    <circle cx="25"  cy="38" r="1.4" fill="#d4a96a" opacity="0.35"/>
+    <circle cx="105" cy="38" r="1.4" fill="#d4a96a" opacity="0.35"/>
+  </svg>
+  <div class="ln r"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     DETAILS
+════════════════════════════════════════ -->
+<section id="details">
+  <div class="details-wrap">
+    <div class="fade-in">
+      <h2 class="sec-title">Программа дня</h2>
+      <p class="sec-sub">Все детали торжества</p>
+    </div>
+
+    <div class="deco-card fade-in delay-1">
+      <span class="corner-bl"></span>
+      <span class="corner-br"></span>
+
+      <div class="timeline">
+
+        <div class="tl-item">
+          <div class="tl-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <circle cx="12" cy="12" r="10"/><path d="M12 6v6l3 3"/>
+            </svg>
+          </div>
+          <div class="tl-body">
+            <div class="tl-time">14:30</div>
+            <div class="tl-name">Сбор гостей</div>
+            <div class="tl-desc">Встреча гостей, приветственный фуршет и фотозона</div>
+          </div>
+        </div>
+
+        <div class="tl-sep"></div>
+
+        <div class="tl-item">
+          <div class="tl-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+            </svg>
+          </div>
+          <div class="tl-body">
+            <div class="tl-time">15:00</div>
+            <div class="tl-name">Выездная церемония</div>
+            <div class="tl-desc">Торжественная регистрация брака</div>
+          </div>
+        </div>
+
+        <div class="tl-sep"></div>
+
+        <div class="tl-item">
+          <div class="tl-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <path d="M21 15l-5-5L5 21"/>
+            </svg>
+          </div>
+          <div class="tl-body">
+            <div class="tl-time">16:00</div>
+            <div class="tl-name">Фотосессия</div>
+            <div class="tl-desc">Прогулка молодожёнов и совместные снимки с гостями</div>
+          </div>
+        </div>
+
+        <div class="tl-sep"></div>
+
+        <div class="tl-item">
+          <div class="tl-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/>
+              <line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
+            </svg>
+          </div>
+          <div class="tl-body">
+            <div class="tl-time">18:00</div>
+            <div class="tl-name">Праздничный ужин</div>
+            <div class="tl-desc">Банкет, тосты, живая музыка и танцы до рассвета</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="dresscode-block">
+        <h3>Дресс-код</h3>
+        <p>Кремовые, бежевые и пудровые тона — нам будет приятно</p>
+        <div class="swatches">
+          <div class="swatch" style="background:#f9f5f0;" title="Кремовый"></div>
+          <div class="swatch" style="background:#e8cfa0;" title="Пшеничный"></div>
+          <div class="swatch" style="background:#d4a96a;" title="Золотой"></div>
+          <div class="swatch" style="background:#c4a882;" title="Бежевый"></div>
+          <div class="swatch" style="background:#b59080;" title="Нюдовый"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FLORAL DIVIDER 2 -->
+<div class="floral-div fade-in">
+  <div class="ln"></div>
+  <svg width="150" height="58" viewBox="0 0 150 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4,38 Q28,16 58,30"   stroke="#d4a96a" stroke-width="1"   fill="none"/>
+    <path d="M146,38 Q122,16 92,30" stroke="#d4a96a" stroke-width="1"   fill="none"/>
+    <path d="M14,20 Q20,7 30,18"   stroke="#d4a96a" stroke-width="0.8" fill="none"/>
+    <path d="M136,20 Q130,7 120,18" stroke="#d4a96a" stroke-width="0.8" fill="none"/>
+    <path d="M38,10 Q44,2 52,10"   stroke="#d4a96a" stroke-width="0.7" fill="none"/>
+    <path d="M112,10 Q106,2 98,10" stroke="#d4a96a" stroke-width="0.7" fill="none"/>
+    <g transform="translate(75,29)">
+      <circle cx="0" cy="0" r="6"  fill="#d4a96a" opacity="0.3"/>
+      <circle cx="0" cy="0" r="10" fill="none" stroke="#d4a96a" stroke-width="0.7" stroke-dasharray="2.5 3"/>
+      <path d="M0,-12 Q4.5,-6 0,0 Q-4.5,-6 0,-12Z" fill="#d4a96a" opacity="0.5"/>
+      <path d="M0,-12 Q4.5,-6 0,0 Q-4.5,-6 0,-12Z" fill="#d4a96a" opacity="0.5" transform="rotate(51.4,0,-6)"/>
+      <path d="M0,-12 Q4.5,-6 0,0 Q-4.5,-6 0,-12Z" fill="#d4a96a" opacity="0.5" transform="rotate(102.8,0,-6)"/>
+      <path d="M0,-12 Q4.5,-6 0,0 Q-4.5,-6 0,-12Z" fill="#d4a96a" opacity="0.5" transform="rotate(154.2,0,-6)"/>
+      <path d="M0,-12 Q4.5,-6 0,0 Q-4.5,-6 0,-12Z" fill="#d4a96a" opacity="0.5" transform="rotate(205.6,0,-6)"/>
+      <path d="M0,-12 Q4.5,-6 0,0 Q-4.5,-6 0,-12Z" fill="#d4a96a" opacity="0.5" transform="rotate(257,0,-6)"/>
+      <path d="M0,-12 Q4.5,-6 0,0 Q-4.5,-6 0,-12Z" fill="#d4a96a" opacity="0.5" transform="rotate(308.5,0,-6)"/>
+    </g>
+    <!-- leaves flanking center -->
+    <path d="M52,34 Q60,20 70,26 Q62,28 52,34Z" fill="#d4a96a" opacity="0.28"/>
+    <path d="M98,34 Q90,20 80,26 Q88,28 98,34Z" fill="#d4a96a" opacity="0.28"/>
+    <circle cx="8"   cy="44" r="2"   fill="#d4a96a" opacity="0.4"/>
+    <circle cx="142" cy="44" r="2"   fill="#d4a96a" opacity="0.4"/>
+    <circle cx="22"  cy="48" r="1.5" fill="#d4a96a" opacity="0.32"/>
+    <circle cx="128" cy="48" r="1.5" fill="#d4a96a" opacity="0.32"/>
+  </svg>
+  <div class="ln r"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     RSVP
+════════════════════════════════════════ -->
+<section id="rsvp">
+  <div class="rsvp-wrap">
+    <div class="fade-in">
+      <h2 class="sec-title">Подтвердите участие</h2>
+      <p class="sec-sub">Просим ответить до 1 июня 2026</p>
+    </div>
+
+    <div class="rsvp-card fade-in delay-1">
+
+      <div id="form-wrap">
+        <form id="rsvp-form" novalidate>
+
+          <div class="f-group">
+            <label class="f-label" for="r-name">Ваше имя</label>
+            <input class="f-input" type="text" id="r-name" placeholder="Имя и фамилия" required>
+          </div>
+
+          <div class="f-group">
+            <label class="f-label" for="r-email">Email</label>
+            <input class="f-input" type="email" id="r-email" placeholder="your@email.com" required>
+          </div>
+
+          <div class="f-group">
+            <label class="f-label">Присутствие</label>
+            <div class="attend-opts">
+              <div class="att-opt">
+                <input type="radio" name="attend" id="att-y" value="yes" checked>
+                <label for="att-y">✅&nbsp; Приду!</label>
+              </div>
+              <div class="att-opt">
+                <input type="radio" name="attend" id="att-n" value="no">
+                <label for="att-n">❌&nbsp; Не смогу</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="f-group">
+            <label class="chk-row">
+              <input type="checkbox" id="plus-one">
+              <span>Приду с партнёром (+1)</span>
+            </label>
+          </div>
+
+          <div class="f-group">
+            <label class="f-label" for="r-wish">Пожелания молодожёнам <span style="opacity:.45">(необязательно)</span></label>
+            <textarea class="f-textarea" id="r-wish" placeholder="Ваши тёплые слова…"></textarea>
+          </div>
+
+          <div id="form-error" style="color:#c0533a;font-size:.9rem;margin-bottom:.75rem;display:none;">
+            Пожалуйста, заполните имя и email.
+          </div>
+
+          <button type="submit" class="btn-send">Отправить</button>
+        </form>
+      </div>
+
+      <div class="rsvp-thanks" id="rsvp-thanks">
+        <div class="t-icon">🤍</div>
+        <h3>Спасибо!</h3>
+        <p>Мы ждём вас с нетерпением</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FLORAL DIVIDER 3 -->
+<div class="floral-div fade-in">
+  <div class="ln"></div>
+  <svg width="130" height="52" viewBox="0 0 130 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6,30 Q26,14 50,28"   stroke="#d4a96a" stroke-width="1"   fill="none"/>
+    <path d="M124,30 Q104,14 80,28" stroke="#d4a96a" stroke-width="1"   fill="none"/>
+    <path d="M18,16 Q24,5 32,15"   stroke="#d4a96a" stroke-width="0.8" fill="none"/>
+    <path d="M112,16 Q106,5 98,15" stroke="#d4a96a" stroke-width="0.8" fill="none"/>
+    <g transform="translate(65,27)">
+      <path d="M0,-11 Q4,-5.5 0,0 Q-4,-5.5 0,-11Z" fill="#d4a96a" opacity="0.55"/>
+      <path d="M0,-11 Q4,-5.5 0,0 Q-4,-5.5 0,-11Z" fill="#d4a96a" opacity="0.55" transform="rotate(90,0,-5.5)"/>
+      <path d="M0,-11 Q4,-5.5 0,0 Q-4,-5.5 0,-11Z" fill="#d4a96a" opacity="0.55" transform="rotate(180,0,-5.5)"/>
+      <path d="M0,-11 Q4,-5.5 0,0 Q-4,-5.5 0,-11Z" fill="#d4a96a" opacity="0.55" transform="rotate(270,0,-5.5)"/>
+      <circle cx="0" cy="0" r="4" fill="#d4a96a" opacity="0.38"/>
+    </g>
+    <circle cx="10"  cy="38" r="2.2" fill="#d4a96a" opacity="0.4"/>
+    <circle cx="120" cy="38" r="2.2" fill="#d4a96a" opacity="0.4"/>
+    <circle cx="24"  cy="43" r="1.5" fill="#d4a96a" opacity="0.32"/>
+    <circle cx="106" cy="43" r="1.5" fill="#d4a96a" opacity="0.32"/>
+  </svg>
+  <div class="ln r"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     GALLERY
+════════════════════════════════════════ -->
+<section id="gallery">
+  <div class="gallery-wrap">
+    <div class="fade-in">
+      <h2 class="sec-title">Наши моменты</h2>
+      <p class="sec-sub">Воспоминания, которые согревают</p>
+    </div>
+
+    <div class="gallery-grid fade-in delay-1" id="gallery-grid">
+
+      <div class="g-item">
+        <img src="https://placehold.co/600x600/d4a96a/f9f5f0?text=%E2%99%A1" alt="Фото 1" loading="lazy">
+      </div>
+      <div class="g-item">
+        <img src="https://placehold.co/600x600/5a4a3a/f9f5f0?text=%E2%99%A1" alt="Фото 2" loading="lazy">
+      </div>
+      <div class="g-item">
+        <img src="https://placehold.co/600x600/c4a882/f9f5f0?text=%E2%99%A1" alt="Фото 3" loading="lazy">
+      </div>
+
+      <div class="g-item ph">
+        <div class="ph-overlay">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#d4a96a" stroke-width="1.4" stroke-linecap="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          Вы можете загрузить фотографии
+        </div>
+      </div>
+      <div class="g-item ph">
+        <div class="ph-overlay">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#d4a96a" stroke-width="1.4" stroke-linecap="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          Вы можете загрузить фотографии
+        </div>
+      </div>
+      <div class="g-item ph">
+        <div class="ph-overlay">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#d4a96a" stroke-width="1.4" stroke-linecap="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          Вы можете загрузить фотографии
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center">
+      <button class="btn-upload" onclick="document.getElementById('photo-file').click()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
+        📷 Загрузить фотографии
+      </button>
+      <input type="file" id="photo-file" multiple accept="image/*">
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div class="ft-names">Виктория &amp; Данила</div>
+  <div class="ft-date">14 июня 2026 года</div>
+  <div class="ft-heart">❤</div>
+</footer>
+
+<script>
+  /* ── COUNTDOWN ── */
+  const TARGET = new Date('2026-06-14T15:00:00');
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tick() {
+    const diff = TARGET - Date.now();
+    if (diff <= 0) {
+      document.getElementById('countdown').innerHTML =
+        '<p style="font-family:\'Great Vibes\',cursive;font-size:2rem;color:#fff;">Сегодня наш день! 🤍</p>';
+      return;
+    }
+    const d = Math.floor(diff / 864e5);
+    const h = Math.floor(diff % 864e5 / 36e5);
+    const m = Math.floor(diff % 36e5  / 6e4);
+    const s = Math.floor(diff % 6e4   / 1e3);
+    document.getElementById('cd-d').textContent = pad(d);
+    document.getElementById('cd-h').textContent = pad(h);
+    document.getElementById('cd-m').textContent = pad(m);
+    document.getElementById('cd-s').textContent = pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  /* ── SCROLL ANIMATIONS ── */
+  const obs = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+  /* ── RSVP ── */
+  const formWrap   = document.getElementById('form-wrap');
+  const thanksDiv  = document.getElementById('rsvp-thanks');
+  const formEl     = document.getElementById('rsvp-form');
+  const formError  = document.getElementById('form-error');
+
+  if (localStorage.getItem('wedding_rsvp')) {
+    formWrap.style.display = 'none';
+    thanksDiv.classList.add('show');
+  }
+
+  formEl.addEventListener('submit', e => {
+    e.preventDefault();
+    const name  = document.getElementById('r-name').value.trim();
+    const email = document.getElementById('r-email').value.trim();
+
+    if (!name || !email) {
+      formError.style.display = 'block';
+      return;
+    }
+    formError.style.display = 'none';
+
+    localStorage.setItem('wedding_rsvp', JSON.stringify({
+      name,
+      email,
+      attend:  document.querySelector('input[name="attend"]:checked').value,
+      plusOne: document.getElementById('plus-one').checked,
+      wish:    document.getElementById('r-wish').value,
+      at:      new Date().toISOString()
+    }));
+
+    formWrap.style.display = 'none';
+    thanksDiv.classList.add('show');
+  });
+
+  /* ── PHOTO GALLERY ── */
+  document.getElementById('photo-file').addEventListener('change', function () {
+    const grid = document.getElementById('gallery-grid');
+    Array.from(this.files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const placeholder = grid.querySelector('.ph');
+        const item = document.createElement('div');
+        item.className = 'g-item new';
+        const img = document.createElement('img');
+        img.src = ev.target.result;
+        img.alt = 'Загруженное фото';
+        item.appendChild(img);
+        if (placeholder) grid.replaceChild(item, placeholder);
+        else grid.appendChild(item);
+      };
+      reader.readAsDataURL(file);
+    });
+    this.value = '';
+  });
+</script>
+</body>
+</html>

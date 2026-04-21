@@ -1,0 +1,227 @@
+:root {
+  --cream: #fdf8f2;
+  --gold: #b8955a;
+  --gold-light: #d4af7a;
+  --gold-pale: #f0e6d2;
+  --text: #3d2b1f;
+  --text-soft: #7a6655;
+  --card-bg: #fffdf9;
+  --shadow: 0 20px 60px rgba(90, 60, 30, 0.15), 0 4px 16px rgba(90, 60, 30, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(184, 149, 90, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(184, 149, 90, 0.06) 0%, transparent 60%);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  padding: 32px 16px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--gold-pale);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  max-width: 480px;
+  width: 100%;
+  padding: 52px 48px;
+  text-align: center;
+  position: relative;
+  outline: 1px solid var(--gold-pale);
+  outline-offset: -12px;
+}
+
+.ornament {
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  opacity: 0.7;
+}
+
+.ornament.top {
+  margin-bottom: 28px;
+}
+
+.ornament.bottom {
+  margin-top: 28px;
+}
+
+.invite-label {
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.name {
+  font-family: 'Great Vibes', cursive;
+  font-size: 62px;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.amp {
+  font-family: 'Great Vibes', cursive;
+  font-size: 36px;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 auto 28px;
+  max-width: 280px;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-light));
+}
+
+.divider .line:last-child {
+  background: linear-gradient(to left, transparent, var(--gold-light));
+}
+
+.heart {
+  color: var(--gold);
+  font-size: 14px;
+}
+
+.announce {
+  font-size: 17px;
+  font-style: italic;
+  color: var(--text-soft);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 36px;
+}
+
+.details {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0;
+  background: var(--gold-pale);
+  border-radius: 2px;
+  padding: 24px 16px;
+  margin-bottom: 36px;
+}
+
+.detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 16px;
+}
+
+.detail-sep {
+  width: 1px;
+  height: 48px;
+  background: var(--gold-light);
+  opacity: 0.5;
+  align-self: center;
+}
+
+.detail-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 400;
+}
+
+.detail-value {
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.detail-value small {
+  display: block;
+  font-size: 13px;
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.rsvp-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.rsvp-text {
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-soft);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.rsvp-btn {
+  display: inline-block;
+  padding: 12px 40px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  text-decoration: none;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 400;
+  transition: background 0.3s, color 0.3s;
+  border-radius: 1px;
+}
+
+.rsvp-btn:hover {
+  background: var(--gold);
+  color: #fff;
+}
+
+@media (max-width: 520px) {
+  .card {
+    padding: 40px 28px;
+    outline-offset: -8px;
+  }
+
+  .name {
+    font-size: 50px;
+  }
+
+  .details {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .detail-sep {
+    width: 60px;
+    height: 1px;
+  }
+}
