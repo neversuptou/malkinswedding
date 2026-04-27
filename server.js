@@ -12,12 +12,21 @@ const VIDEO_RE   = /\.(mp4|webm|mov|avi)$/i;
 
 if (!fs.existsSync(PHOTOS_DIR)) fs.mkdirSync(PHOTOS_DIR);
 
-const CSV_HEADER = 'Имя;Телефон;Статус;+1;Горячее;Салат;Имя партнёра;Телефон партнёра;Горячее партнёра;Салат партнёра;Пожелания;Дата\n';
-if (!fs.existsSync(GUESTS_CSV)) fs.writeFileSync(GUESTS_CSV, '\ufeff' + CSV_HEADER, 'utf8');
+const CSV_HEADER = 'Имя;Телефон;Статус;+1;Горячее;Салат;Имя партнёра;Телефон партнёра;Горячее партнёра;Салат партнёра;Пожелания;Дата;Песня 1;Песня 2\n';
+if (!fs.existsSync(GUESTS_CSV)) fs.writeFileSync(GUESTS_CSV, '﻿' + CSV_HEADER, 'utf8');
 
 function csvEscape(val) {
   const s = String(val ?? '').replace(/"/g, '""');
   return /[;"\n\r]/.test(s) ? `"${s}"` : s;
+}
+
+function tgEscape(val) {
+  return String(val ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function tgLink(url) {
+  const esc = tgEscape(url);
+  return `<a href="${esc}">${esc}</a>`;
 }
 
 const MIME_EXT = {
@@ -93,43 +102,58 @@ function tgRequest(method, body) {
 async function tgSend(text, chatId) {
   if (!BOT_ACTIVE) return;
   try {
-    await tgRequest('sendMessage', {
+    const r = await tgRequest('sendMessage', {
       chat_id: chatId ?? TG_CHAT_ID,
       text,
       parse_mode: 'HTML',
     });
+    if (!r.ok) console.error('[tg] API error:', r.description);
   } catch (e) {
     console.error('[tg] ошибка отправки:', e.message);
   }
 }
 
-// Читаем CSV и форматируем список гостей
+// Читаем CSV и форматируем список гостей (массив сообщений ≤ 3800 символов)
 function formatGuestsList() {
-  const raw = fs.readFileSync(GUESTS_CSV, 'utf8').replace(/^\ufeff/, '');
-  const lines = raw.trim().split('\n').slice(1).filter(Boolean); // пропускаем заголовок
-  if (!lines.length) return '📋 Пока никто не оставил заявку.';
+  const raw = fs.readFileSync(GUESTS_CSV, 'utf8').replace(/^﻿/, '');
+  const lines = raw.trim().split('\n').slice(1).filter(Boolean);
+  if (!lines.length) return ['📋 Пока никто не оставил заявку.'];
 
-  let msg = `<b>📋 Гости (${lines.length}):</b>\n\n`;
+  const LIMIT = 3800;
+  const messages = [];
+  let cur = `<b>📋 Гости (${lines.length}):</b>\n\n`;
+
   lines.forEach((line, i) => {
     const cols = line.split(';').map(c => c.replace(/^"|"$/g, '').replace(/""/g, '"'));
-    const [name, phone, status, plusOne, hot, salad, partnerName, partnerPhone, partnerHot, partnerSalad, wish] = cols;
+    const [name, phone, status, plusOne, hot, salad, partnerName, partnerPhone, partnerHot, partnerSalad, wish, _date, song1, song2] = cols;
     const icon = status === 'Придёт' ? '✅' : '❌';
-    msg += `${i + 1}. ${icon} <b>${name}</b>`;
-    if (phone) msg += ` · ${phone}`;
-    msg += '\n';
-    if (hot)   msg += `   🍖 ${hot}\n`;
-    if (salad) msg += `   🥗 ${salad}\n`;
+    let block = `${i + 1}. ${icon} <b>${tgEscape(name)}</b>`;
+    if (phone) block += ` · ${tgEscape(phone)}`;
+    block += '\n';
+    if (hot)   block += `   🍖 ${tgEscape(hot)}\n`;
+    if (salad) block += `   🥗 ${tgEscape(salad)}\n`;
     if (plusOne === 'Да') {
-      msg += `   👫 Партнёр: <b>${partnerName || '—'}</b>`;
-      if (partnerPhone) msg += ` · ${partnerPhone}`;
-      msg += '\n';
-      if (partnerHot)   msg += `   🍖 ${partnerHot}\n`;
-      if (partnerSalad) msg += `   🥗 ${partnerSalad}\n`;
+      block += `   👫 Партнёр: <b>${tgEscape(partnerName) || '—'}</b>`;
+      if (partnerPhone) block += ` · ${tgEscape(partnerPhone)}`;
+      block += '\n';
+      if (partnerHot)   block += `   🍖 ${tgEscape(partnerHot)}\n`;
+      if (partnerSalad) block += `   🥗 ${tgEscape(partnerSalad)}\n`;
     }
-    if (wish)  msg += `   💬 ${wish}\n`;
-    msg += '\n';
+    if (song1) block += `   🎵 ${tgLink(song1)}\n`;
+    if (song2) block += `   🎵 ${tgLink(song2)}\n`;
+    if (wish)  block += `   💬 ${tgEscape(wish)}\n`;
+    block += '\n';
+
+    if (cur.length + block.length > LIMIT) {
+      messages.push(cur.trim());
+      cur = block;
+    } else {
+      cur += block;
+    }
   });
-  return msg.trim();
+
+  if (cur.trim()) messages.push(cur.trim());
+  return messages;
 }
 
 // Long polling — слушаем команды
@@ -140,7 +164,19 @@ async function startPolling() {
   }
   console.log('  🤖 Telegram бот запущен');
 
+  // Дренируем всю очередь при старте — пропускаем старые команды
   let offset = 0;
+  try {
+    let batch;
+    do {
+      batch = await tgRequest('getUpdates', { offset, limit: 100, timeout: 0 });
+      if (batch.ok && batch.result.length) {
+        offset = batch.result[batch.result.length - 1].update_id + 1;
+      }
+    } while (batch.ok && batch.result.length === 100);
+    if (offset > 0) console.log(`[tg] очередь очищена, пропущено до update_id=${offset - 1}`);
+  } catch {}
+
   const poll = async () => {
     try {
       const data = await tgRequest('getUpdates', { offset, timeout: 25, allowed_updates: ['message'] });
@@ -158,7 +194,10 @@ async function startPolling() {
           const cleanCmd = msg.text.trim().toLowerCase().replace('@' + botName, '');
 
           if (cleanCmd === '/guests') {
-            await tgSend(formatGuestsList(), from);
+            const parts = formatGuestsList();
+            for (const part of parts) {
+              await tgSend(part, from);
+            }
           } else if (cleanCmd === '/start' || cleanCmd === '/myid') {
             await tgSend(
               `👋 Привет!\n\n` +
@@ -246,6 +285,8 @@ const server = http.createServer(async (req, res) => {
         d.plusOne ? (d.partnerSalad ?? '') : '',
         d.wish,
         new Date().toLocaleString('ru-RU'),
+        d.song1 ?? '',
+        d.song2 ?? '',
       ].map(csvEscape).join(';') + '\n';
 
       fs.appendFileSync(GUESTS_CSV, row, 'utf8');
@@ -254,19 +295,21 @@ const server = http.createServer(async (req, res) => {
       // Уведомление в Telegram
       const icon = d.attend === 'yes' ? '✅' : '❌';
       let tgMsg = `${icon} <b>Новый гость!</b>\n\n`;
-      tgMsg += `👤 <b>${d.name}</b>\n`;
-      if (d.phone)   tgMsg += `📞 ${d.phone}\n`;
+      tgMsg += `👤 <b>${tgEscape(d.name)}</b>\n`;
+      if (d.phone)   tgMsg += `📞 ${tgEscape(d.phone)}\n`;
       tgMsg += `Статус: ${d.attend === 'yes' ? 'Придёт' : 'Не придёт'}\n`;
-      if (d.hot)      tgMsg += `🍖 Горячее: ${d.hot}\n`;
-      if (d.salad)    tgMsg += `🥗 Салат: ${d.salad}\n`;
+      if (d.hot)      tgMsg += `🍖 Горячее: ${tgEscape(d.hot)}\n`;
+      if (d.salad)    tgMsg += `🥗 Салат: ${tgEscape(d.salad)}\n`;
       if (d.plusOne) {
         tgMsg += `\n👫 <b>Партнёр:</b>\n`;
-        if (d.partnerName)  tgMsg += `👤 ${d.partnerName}\n`;
-        if (d.partnerPhone) tgMsg += `📞 ${d.partnerPhone}\n`;
-        if (d.partnerHot)   tgMsg += `🍖 Горячее: ${d.partnerHot}\n`;
-        if (d.partnerSalad) tgMsg += `🥗 Салат: ${d.partnerSalad}\n`;
+        if (d.partnerName)  tgMsg += `👤 ${tgEscape(d.partnerName)}\n`;
+        if (d.partnerPhone) tgMsg += `📞 ${tgEscape(d.partnerPhone)}\n`;
+        if (d.partnerHot)   tgMsg += `🍖 Горячее: ${tgEscape(d.partnerHot)}\n`;
+        if (d.partnerSalad) tgMsg += `🥗 Салат: ${tgEscape(d.partnerSalad)}\n`;
       }
-      if (d.wish)     tgMsg += `\n💬 Пожелание: ${d.wish}\n`;
+      if (d.song1)    tgMsg += `🎵 Песня 1: ${tgLink(d.song1)}\n`;
+      if (d.song2)    tgMsg += `🎵 Песня 2: ${tgLink(d.song2)}\n`;
+      if (d.wish)     tgMsg += `\n💬 Пожелание: ${tgEscape(d.wish)}\n`;
       console.log(`[tg] уведомление → chat_id=${_adminChatId}`);
       tgSend(tgMsg, _adminChatId);
 

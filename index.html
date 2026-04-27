@@ -974,6 +974,12 @@
           </div>
 
           <div class="f-group">
+            <label class="f-label">Ссылки на песни, которые вы бы хотели услышать на свадьбе <span style="opacity:.45">(необязательно)</span></label>
+            <input class="f-input" type="text" id="r-song1" placeholder="Ссылка на песню 1(Вк, яндекс музыка, и др.)…" style="margin-bottom:0.5rem;">
+            <input class="f-input" type="text" id="r-song2" placeholder="Ссылка на песню 2(Вк, яндекс музыка, и др.)…">
+          </div>
+
+          <div class="f-group">
             <label class="f-label" for="r-wish">Пожелания молодожёнам <span style="opacity:.45">(необязательно)</span></label>
             <textarea class="f-textarea" id="r-wish" placeholder="Ваши тёплые слова…"></textarea>
           </div>
@@ -1210,6 +1216,8 @@
       salad:        document.getElementById('r-salad').value,
       partnerHot:   withPartner ? document.getElementById('r-partner-hot').value : undefined,
       partnerSalad: withPartner ? document.getElementById('r-partner-salad').value : undefined,
+      song1:        document.getElementById('r-song1').value,
+      song2:        document.getElementById('r-song2').value,
       wish:         document.getElementById('r-wish').value,
     };
 
