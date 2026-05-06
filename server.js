@@ -353,7 +353,7 @@ const server = http.createServer(async (req, res) => {
     const staticPath = path.join(__dirname, 'public', url.pathname);
     if (fs.existsSync(staticPath) && fs.statSync(staticPath).isFile()) {
       const ext = path.extname(staticPath).toLowerCase();
-      const mime = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon', '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }[ext] || 'application/octet-stream';
+      const mime = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon', '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', '.txt': 'text/plain' }[ext] || 'application/octet-stream';
       res.writeHead(200, { 'Content-Type': mime });
       fs.createReadStream(staticPath).pipe(res);
       return;
