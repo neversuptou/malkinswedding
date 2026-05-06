@@ -18,6 +18,9 @@ guests.csv
 .admin_chat_id
 photos/
 
+# Claude Code
+.claude/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
